@@ -1,9 +1,10 @@
-import { Query, Resolver } from "type-graphql";
+import { MyContext } from "src/utils/types";
+import { Ctx, Query, Resolver } from "type-graphql";
 
 @Resolver()
 export class HelloResolver {
   @Query(() => String)
-  hello() {
-    return "Hello World";
+  hello(@Ctx() {}: MyContext): String {
+    return "hello world";
   }
 }
