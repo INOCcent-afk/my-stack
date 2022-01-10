@@ -33,6 +33,11 @@ const Navbar: FC<ReactNode> = ({ children }) => {
           </Link>
         </li>
         <li>
+          <Link href="/private-route">
+            <a>Private Route</a>
+          </Link>
+        </li>
+        <li>
           <button>logout</button>
         </li>
       </ul>
