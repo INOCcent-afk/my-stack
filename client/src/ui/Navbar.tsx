@@ -1,10 +1,22 @@
 import Link from "next/link";
 import React, { FC, ReactNode } from "react";
+import { MeQuery, useMeQuery } from "../generated/graphql";
+import graphqlRequestClient from "../lib/clients/graphqlRequestClient";
 
 const Navbar: FC<ReactNode> = ({ children }) => {
+  const { data } = useMeQuery<MeQuery | null | undefined>(graphqlRequestClient);
+
   return (
     <header>
-      <ul>
+      <ul
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: 10,
+          listStyle: "none",
+        }}
+      >
+        {data && <p style={{ color: "red" }}>{data?.me?.username}</p>}
         <li>
           <Link href="/">
             <a>Home</a>
