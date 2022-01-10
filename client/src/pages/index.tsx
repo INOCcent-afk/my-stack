@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { Post, PostsQuery, usePostsQuery } from "../generated/graphql";
+import { PostsQuery, usePostsQuery } from "../generated/graphql";
 import graphqlRequestClient from "../lib/clients/graphqlRequestClient";
 
 export default function Home() {
