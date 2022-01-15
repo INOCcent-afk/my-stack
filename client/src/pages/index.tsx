@@ -1,5 +1,5 @@
 import Head from "next/head";
-import PostsListContainer from "../containers/PostsListContainer";
+import PostsListContainer from "../containers/PostListContainer";
 import withAuth from "../shared-components/withAuth";
 
 export const Home = () => {

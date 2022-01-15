@@ -1,6 +1,7 @@
 import React from "react";
 import { PostsQuery, usePostsQuery } from "../generated/graphql";
 import graphqlRequestClient from "../lib/clients/graphqlRequestClient";
+import Button from "../ui/Button";
 import UpVotes from "../ui/UpVotes";
 
 const PostsListContainer = () => {
@@ -24,7 +25,7 @@ const PostsListContainer = () => {
         {data &&
           data.posts.map((item) => (
             <div
-              className="text-white bg-gray-800 p-5 flex flex-col rounded-md hover:opacity-95 gap-6"
+              className="text-white bg-gray-800 p-5 flex flex-col rounded-md gap-6"
               key={item.id}
             >
               <div className="">{item.title}</div>
@@ -36,7 +37,10 @@ const PostsListContainer = () => {
                 />
                 <div className="">Description</div>
               </div>
-              <div className=""></div>
+              <div className="flex gap-4 self-end">
+                <Button text="Edit" onClick={() => {}} variant="success" />
+                <Button text="Delete" onClick={() => {}} variant="error" />
+              </div>
             </div>
           ))}
       </div>
