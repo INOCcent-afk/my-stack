@@ -30,6 +30,7 @@ export type Mutation = {
   createPost: Post;
   deletePost: Scalars['Boolean'];
   login: UserResponse;
+  logout: Scalars['Boolean'];
   register: UserResponse;
   updatePost?: Maybe<Post>;
 };
@@ -110,6 +111,11 @@ export type LoginMutationVariables = Exact<{
 
 export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'UserResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null | undefined, user?: { __typename?: 'User', id: number, username: string } | null | undefined } };
 
+export type LogoutMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type LogoutMutation = { __typename?: 'Mutation', logout: boolean };
+
 export type RegisterMutationVariables = Exact<{
   options: UsernamePasswordInput;
 }>;
@@ -153,6 +159,24 @@ export const useLoginMutation = <
     useMutation<LoginMutation, TError, LoginMutationVariables, TContext>(
       'Login',
       (variables?: LoginMutationVariables) => fetcher<LoginMutation, LoginMutationVariables>(client, LoginDocument, variables, headers)(),
+      options
+    );
+export const LogoutDocument = `
+    mutation Logout {
+  logout
+}
+    `;
+export const useLogoutMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(
+      client: GraphQLClient,
+      options?: UseMutationOptions<LogoutMutation, TError, LogoutMutationVariables, TContext>,
+      headers?: RequestInit['headers']
+    ) =>
+    useMutation<LogoutMutation, TError, LogoutMutationVariables, TContext>(
+      'Logout',
+      (variables?: LogoutMutationVariables) => fetcher<LogoutMutation, LogoutMutationVariables>(client, LogoutDocument, variables, headers)(),
       options
     );
 export const RegisterDocument = `
