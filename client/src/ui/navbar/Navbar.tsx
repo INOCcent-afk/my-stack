@@ -1,12 +1,30 @@
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React, { FC } from "react";
-import { MeQuery, useMeQuery } from "../../generated/graphql";
+import { useQueryClient } from "react-query";
+import {
+  LogoutMutation,
+  MeQuery,
+  useLogoutMutation,
+  useMeQuery,
+} from "../../generated/graphql";
 import graphqlRequestClient from "../../lib/clients/graphqlRequestClient";
 import { ILink } from "../../models/ILink";
 import { withAuthNavItems, noAuthNavItems } from "./mainNavItems";
 
 const Navbar: FC = () => {
+  const router = useRouter();
+  const queryClient = useQueryClient();
   const { data } = useMeQuery<MeQuery | null | undefined>(graphqlRequestClient);
+  const mutation = useLogoutMutation<LogoutMutation | Error>(
+    graphqlRequestClient,
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("Me");
+        router.push("/login");
+      },
+    }
+  );
 
   return (
     <header className="py-6 flex items-center justify-center bg-gray-800">
@@ -15,7 +33,7 @@ const Navbar: FC = () => {
         {data?.me && (
           <>
             <NavbarList links={withAuthNavItems} />
-            <li>
+            <li onClick={() => mutation.mutate({})}>
               <button>logout</button>
             </li>
           </>
