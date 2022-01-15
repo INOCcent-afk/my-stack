@@ -29,8 +29,6 @@ const PostsListContainer = () => {
               title={item.title}
               id={item.id}
               description={item.description as string}
-              addAction={() => {}}
-              substructAction={() => {}}
               voteNumber={0}
             />
           ))}

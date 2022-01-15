@@ -8,12 +8,13 @@ import {
 } from "../generated/graphql";
 import graphqlRequestClient from "../lib/clients/graphqlRequestClient";
 import Button from "./Button";
-import UpVotes, { UpVotesProps } from "./UpVotes";
+import UpVotes from "./UpVotes";
 
-interface PostProps extends UpVotesProps {
+interface PostProps {
   title: string;
   id: number;
   description: string;
+  voteNumber: number;
 }
 
 const Post: FC<PostProps> = ({ title, id, description, voteNumber }) => {

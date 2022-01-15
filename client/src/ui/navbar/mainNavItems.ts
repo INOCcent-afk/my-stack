@@ -6,6 +6,10 @@ export const withAuthNavItems: ILink[] = [
     href: "/",
   },
   {
+    linkName: "Create Post",
+    href: "/create-post",
+  },
+  {
     linkName: "Private Route",
     href: "/private-route",
   },
