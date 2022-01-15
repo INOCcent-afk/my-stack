@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 import { PostsQuery, usePostsQuery } from "../generated/graphql";
 import graphqlRequestClient from "../lib/clients/graphqlRequestClient";
@@ -38,7 +39,9 @@ const PostsListContainer = () => {
                 <div className="">Description</div>
               </div>
               <div className="flex gap-4 self-end">
-                <Button text="Edit" onClick={() => {}} variant="success" />
+                <Link href={`/post-edit/${item.id}`}>
+                  <Button text="Edit" onClick={() => {}} variant="success" />
+                </Link>
                 <Button text="Delete" onClick={() => {}} variant="error" />
               </div>
             </div>

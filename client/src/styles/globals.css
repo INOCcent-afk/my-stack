@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --color-accent-hover: #fd6868;
+}
+
 html,
 body {
   padding: 0;
@@ -21,4 +25,23 @@ a {
 
 input { 
   border: 1px solid black;
+}
+
+#nprogress {
+  position: relative;
+  z-index: 9999999;
+}
+
+#nprogress .bar {
+  background: var(--color-accent-hover) !important;
+}
+
+#nprogress .peg {
+  box-shadow: 0 0 10px var(--color-accent-hover),
+    0 0 5px var(--color-accent-hover) !important;
+}
+
+#nprogress .spinner-icon {
+  border-top-color: var(--color-accent-hover) !important;
+  border-left-color: var(--color-accent-hover) !important;
 }
