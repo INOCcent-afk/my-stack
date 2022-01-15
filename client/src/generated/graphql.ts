@@ -104,6 +104,14 @@ export type UsernamePasswordInput = {
   username: Scalars['String'];
 };
 
+export type CreatePostMutationVariables = Exact<{
+  title: Scalars['String'];
+  description: Scalars['String'];
+}>;
+
+
+export type CreatePostMutation = { __typename?: 'Mutation', createPost: { __typename?: 'Post', id: number, createdAt: string, title: string, description?: string | null | undefined } };
+
 export type DeletePostMutationVariables = Exact<{
   id: Scalars['Float'];
 }>;
@@ -141,6 +149,29 @@ export type PostsQueryVariables = Exact<{ [key: string]: never; }>;
 export type PostsQuery = { __typename?: 'Query', posts: Array<{ __typename?: 'Post', id: number, createdAt: string, updatedAt: string, title: string, description?: string | null | undefined }> };
 
 
+export const CreatePostDocument = `
+    mutation CreatePost($title: String!, $description: String!) {
+  createPost(title: $title, description: $description) {
+    id
+    createdAt
+    title
+    description
+  }
+}
+    `;
+export const useCreatePostMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(
+      client: GraphQLClient,
+      options?: UseMutationOptions<CreatePostMutation, TError, CreatePostMutationVariables, TContext>,
+      headers?: RequestInit['headers']
+    ) =>
+    useMutation<CreatePostMutation, TError, CreatePostMutationVariables, TContext>(
+      'CreatePost',
+      (variables?: CreatePostMutationVariables) => fetcher<CreatePostMutation, CreatePostMutationVariables>(client, CreatePostDocument, variables, headers)(),
+      options
+    );
 export const DeletePostDocument = `
     mutation DeletePost($id: Float!) {
   deletePost(id: $id)
