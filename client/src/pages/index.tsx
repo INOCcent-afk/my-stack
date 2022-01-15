@@ -1,11 +1,8 @@
 import Head from "next/head";
-import { PostsQuery, usePostsQuery } from "../generated/graphql";
-import graphqlRequestClient from "../lib/clients/graphqlRequestClient";
+import PostsListContainer from "../containers/PostsListContainer";
 import withAuth from "../shared-components/withAuth";
 
 export const Home = () => {
-  const { data } = usePostsQuery<PostsQuery, Error>(graphqlRequestClient, {});
-
   return (
     <>
       <Head>
@@ -14,7 +11,7 @@ export const Home = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      {data && data.posts.map((item) => <div key={item.id}>{item.title}</div>)}
+      <PostsListContainer />
     </>
   );
 };
