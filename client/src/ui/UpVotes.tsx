@@ -1,6 +1,8 @@
-import React, { FC, HTMLProps } from "react";
+import React, { FC } from "react";
+import ChevronDownIcon from "../icons/ChevronDownIcon";
+import ChevronUpIcon from "../icons/ChevronUpIcon";
 
-interface UpVotesProps {
+export interface UpVotesProps {
   addAction: () => void;
   voteNumber: number;
   substructAction: () => void;
@@ -13,12 +15,12 @@ const UpVotes: FC<UpVotesProps> = ({
 }) => {
   return (
     <div className="flex flex-col items-center">
-      <div className="" onClick={addAction}>
-        Add
+      <div className="cursor-pointer" onClick={addAction}>
+        <ChevronUpIcon />
       </div>
       <div className="">{voteNumber}</div>
-      <div className="" onClick={substructAction}>
-        Minus
+      <div className="cursor-pointer" onClick={substructAction}>
+        <ChevronDownIcon />
       </div>
     </div>
   );
