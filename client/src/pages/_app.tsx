@@ -18,7 +18,9 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <QueryClientProvider client={queryClient}>
       <Navbar />
-      <Component {...pageProps} />
+      <div className="max-w-screen-lg mx-auto my-10 px-10 lg:px-0 flex flex-col gap-6">
+        <Component {...pageProps} />
+      </div>
     </QueryClientProvider>
   );
 }

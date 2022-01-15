@@ -12,7 +12,9 @@ const withAuth: withAuthenticationFn = (Component) => {
     );
     const router = useRouter();
 
-    if (data?.me === null) router.push("/");
+    if (data?.me === null) router.push("/login");
+
+    console.log(data?.me);
 
     return data?.me ? <Component /> : null;
   };

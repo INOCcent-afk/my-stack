@@ -1,10 +1,17 @@
 import { ILink } from "../../models/ILink";
 
-export const mainNavItems: ILink[] = [
+export const withAuthNavItems: ILink[] = [
   {
     linkName: "Home",
     href: "/",
   },
+  {
+    linkName: "Private Route",
+    href: "/private-route",
+  },
+];
+
+export const noAuthNavItems: ILink[] = [
   {
     linkName: "Login",
     href: "/login",
@@ -12,9 +19,5 @@ export const mainNavItems: ILink[] = [
   {
     linkName: "Register",
     href: "/register",
-  },
-  {
-    linkName: "Private Route",
-    href: "/private-route",
   },
 ];

@@ -1,8 +1,12 @@
+import { useRouter } from "next/router";
 import React, { FormEvent, SyntheticEvent, useState } from "react";
 import { LoginMutation, useLoginMutation } from "../generated/graphql";
 import graphqlRequestClient from "../lib/clients/graphqlRequestClient";
+import withNoAuth from "../shared-components/withNoAuth";
 
 const login = () => {
+  const router = useRouter();
+
   const [userData, setUserData] = useState({
     username: "",
     password: "",
@@ -24,6 +28,7 @@ const login = () => {
     {
       onSuccess: (data: LoginMutation) => {
         if (data.login.user) {
+          router.push("/");
         } else {
           setErrors({
             field: data.login.errors![0].field,
@@ -67,4 +72,4 @@ const login = () => {
   );
 };
 
-export default login;
+export default withNoAuth(login);

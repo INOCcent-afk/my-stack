@@ -1,8 +1,9 @@
 import Head from "next/head";
 import { PostsQuery, usePostsQuery } from "../generated/graphql";
 import graphqlRequestClient from "../lib/clients/graphqlRequestClient";
+import withAuth from "../shared-components/withAuth";
 
-export default function Home() {
+export const Home = () => {
   const { data } = usePostsQuery<PostsQuery, Error>(graphqlRequestClient, {});
 
   return (
@@ -16,4 +17,6 @@ export default function Home() {
       {data && data.posts.map((item) => <div key={item.id}>{item.title}</div>)}
     </>
   );
-}
+};
+
+export default withAuth(Home);
