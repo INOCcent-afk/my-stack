@@ -29,7 +29,7 @@ const PostsListContainer = () => {
               className="text-white bg-gray-800 p-5 flex flex-col rounded-md gap-6"
               key={item.id}
             >
-              <div className="">{item.title}</div>
+              <div className="">Creator: {item.title}</div>
               <div className="flex items-start gap-10">
                 <UpVotes
                   addAction={() => {}}
