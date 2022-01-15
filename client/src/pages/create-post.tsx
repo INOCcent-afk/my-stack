@@ -17,7 +17,7 @@ const createPost = () => {
   const createPost = useCreatePostMutation<CreatePostMutation | Error>(
     graphqlRequestClient,
     {
-      onSuccess: (data: CreatePostMutation) => {
+      onSuccess: () => {
         queryClient.invalidateQueries("Posts");
         toast("Post Added");
       },
@@ -28,19 +28,24 @@ const createPost = () => {
     <div>
       <Formik
         initialValues={{ title: "", description: "" }}
-        onSubmit={async (values) => {
+        onSubmit={async (values, { resetForm }) => {
           createPost.mutate(values);
+          resetForm();
         }}
       >
         {({ isSubmitting }) => (
-          <Form>
-            <InputField name="title" placeholder="title" label="title" />
+          <Form className="flex flex-col items-start gap-3">
+            <InputField name="title" placeholder="Title" label="Title" />
             <TextAreaField
               name="description"
-              placeholder="description"
-              label="description"
+              placeholder="Description"
+              label="Description"
             />
-            <Button text="Create Post" />
+            <Button
+              text="Create Post"
+              variant="secondary"
+              disabled={isSubmitting}
+            />
           </Form>
         )}
       </Formik>
