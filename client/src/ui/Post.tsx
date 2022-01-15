@@ -1,5 +1,12 @@
 import Link from "next/link";
 import React, { FC } from "react";
+import { useQueryClient } from "react-query";
+import { toast } from "react-toastify";
+import {
+  DeletePostMutation,
+  useDeletePostMutation,
+} from "../generated/graphql";
+import graphqlRequestClient from "../lib/clients/graphqlRequestClient";
 import Button from "./Button";
 import UpVotes, { UpVotesProps } from "./UpVotes";
 
@@ -9,14 +16,19 @@ interface PostProps extends UpVotesProps {
   description: string;
 }
 
-const Post: FC<PostProps> = ({
-  title,
-  id,
-  description,
-  addAction,
-  substructAction,
-  voteNumber,
-}) => {
+const Post: FC<PostProps> = ({ title, id, description, voteNumber }) => {
+  const queryClient = useQueryClient();
+
+  const deletePost = useDeletePostMutation<DeletePostMutation | Error>(
+    graphqlRequestClient,
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("Posts");
+        toast.success("Deleted Post");
+      },
+    }
+  );
+
   return (
     <div className="text-white bg-gray-800 p-5 flex flex-col rounded-md gap-6">
       <div className="flex items-center gap-2 ">
@@ -25,17 +37,23 @@ const Post: FC<PostProps> = ({
       </div>
       <div className="flex items-start gap-10">
         <UpVotes
-          addAction={addAction}
-          substructAction={substructAction}
+          addAction={() => {}}
+          substructAction={() => {}}
           voteNumber={voteNumber}
         />
         <div className="">{description}</div>
       </div>
       <div className="flex gap-4 self-end">
         <Link href={`/post-edit/${id}`}>
-          <Button text="Edit" onClick={() => {}} variant="success" />
+          <a>
+            <Button text="Edit" variant="success" />
+          </a>
         </Link>
-        <Button text="Delete" onClick={() => {}} variant="error" />
+        <Button
+          text="Delete"
+          onClick={() => deletePost.mutate({ id })}
+          variant="error"
+        />
       </div>
     </div>
   );

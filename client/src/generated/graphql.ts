@@ -104,6 +104,13 @@ export type UsernamePasswordInput = {
   username: Scalars['String'];
 };
 
+export type DeletePostMutationVariables = Exact<{
+  id: Scalars['Float'];
+}>;
+
+
+export type DeletePostMutation = { __typename?: 'Mutation', deletePost: boolean };
+
 export type LoginMutationVariables = Exact<{
   options: UsernamePasswordInput;
 }>;
@@ -134,6 +141,24 @@ export type PostsQueryVariables = Exact<{ [key: string]: never; }>;
 export type PostsQuery = { __typename?: 'Query', posts: Array<{ __typename?: 'Post', id: number, createdAt: string, updatedAt: string, title: string, description?: string | null | undefined }> };
 
 
+export const DeletePostDocument = `
+    mutation DeletePost($id: Float!) {
+  deletePost(id: $id)
+}
+    `;
+export const useDeletePostMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(
+      client: GraphQLClient,
+      options?: UseMutationOptions<DeletePostMutation, TError, DeletePostMutationVariables, TContext>,
+      headers?: RequestInit['headers']
+    ) =>
+    useMutation<DeletePostMutation, TError, DeletePostMutationVariables, TContext>(
+      'DeletePost',
+      (variables?: DeletePostMutationVariables) => fetcher<DeletePostMutation, DeletePostMutationVariables>(client, DeletePostDocument, variables, headers)(),
+      options
+    );
 export const LoginDocument = `
     mutation Login($options: UsernamePasswordInput!) {
   login(options: $options) {

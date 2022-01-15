@@ -4,12 +4,12 @@ import graphqlRequestClient from "../lib/clients/graphqlRequestClient";
 import Post from "../ui/Post";
 
 const PostsListContainer = () => {
-  const { data, isLoading } = usePostsQuery<PostsQuery, Error>(
+  const { data, isLoading, isFetching } = usePostsQuery<PostsQuery, Error>(
     graphqlRequestClient,
     {}
   );
 
-  if (isLoading) {
+  if (isLoading || isFetching) {
     return (
       <div className="">
         <h1 className="text-7xl my-8 font-bold text-gray-800">Loading...</h1>
