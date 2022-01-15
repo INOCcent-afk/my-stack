@@ -9,20 +9,19 @@ const PostsListContainer = () => {
     {}
   );
 
-  if (isLoading || isFetching) {
-    return (
-      <div className="">
-        <h1 className="text-7xl my-8 font-bold text-gray-800">Loading...</h1>
-      </div>
-    );
-  }
-
   return (
     <div className="">
       <h1 className="text-7xl my-8 font-bold text-gray-800">Posts</h1>
 
       <div className="flex flex-col gap-5">
-        {data &&
+        {isLoading || isFetching ? (
+          <div className="">
+            <h1 className="text-7xl my-8 font-bold text-gray-800">
+              Loading...
+            </h1>
+          </div>
+        ) : (
+          data &&
           data.posts.map((item) => (
             <Post
               key={item.id}
@@ -31,7 +30,8 @@ const PostsListContainer = () => {
               description={item.description as string}
               voteNumber={0}
             />
-          ))}
+          ))
+        )}
       </div>
     </div>
   );

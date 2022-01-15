@@ -25,31 +25,30 @@ const createPost = () => {
   );
 
   return (
-    <div>
-      <Formik
-        initialValues={{ title: "", description: "" }}
-        onSubmit={async (values, { resetForm }) => {
-          createPost.mutate(values);
-          resetForm();
-        }}
-      >
-        {({ isSubmitting }) => (
-          <Form className="flex flex-col items-start gap-3">
-            <InputField name="title" placeholder="Title" label="Title" />
-            <TextAreaField
-              name="description"
-              placeholder="Description"
-              label="Description"
-            />
-            <Button
-              text="Create Post"
-              variant="secondary"
-              disabled={isSubmitting}
-            />
-          </Form>
-        )}
-      </Formik>
-    </div>
+    <Formik
+      initialValues={{ title: "", description: "" }}
+      onSubmit={async (values, { resetForm }) => {
+        createPost.mutate(values);
+        resetForm();
+      }}
+    >
+      {({ isSubmitting }) => (
+        <Form className="flex flex-col items-start gap-3">
+          <InputField name="title" placeholder="Title" label="Title" />
+          <TextAreaField
+            name="description"
+            placeholder="Description"
+            label="Description"
+          />
+          <Button
+            type="submit"
+            text="Create Post"
+            variant="secondary"
+            disabled={isSubmitting}
+          />
+        </Form>
+      )}
+    </Formik>
   );
 };
 

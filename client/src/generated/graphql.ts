@@ -138,10 +138,26 @@ export type RegisterMutationVariables = Exact<{
 
 export type RegisterMutation = { __typename?: 'Mutation', register: { __typename?: 'UserResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null | undefined, user?: { __typename?: 'User', id: number, username: string } | null | undefined } };
 
+export type UpdatePostMutationVariables = Exact<{
+  id: Scalars['Float'];
+  title?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type UpdatePostMutation = { __typename?: 'Mutation', updatePost?: { __typename?: 'Post', id: number, title: string, description?: string | null | undefined, updatedAt: string } | null | undefined };
+
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', username: string, id: number } | null | undefined };
+
+export type PostQueryVariables = Exact<{
+  id: Scalars['Float'];
+}>;
+
+
+export type PostQuery = { __typename?: 'Query', post?: { __typename?: 'Post', id: number, title: string, description?: string | null | undefined } | null | undefined };
 
 export type PostsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -262,6 +278,29 @@ export const useRegisterMutation = <
       (variables?: RegisterMutationVariables) => fetcher<RegisterMutation, RegisterMutationVariables>(client, RegisterDocument, variables, headers)(),
       options
     );
+export const UpdatePostDocument = `
+    mutation UpdatePost($id: Float!, $title: String, $description: String) {
+  updatePost(id: $id, title: $title, description: $description) {
+    id
+    title
+    description
+    updatedAt
+  }
+}
+    `;
+export const useUpdatePostMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(
+      client: GraphQLClient,
+      options?: UseMutationOptions<UpdatePostMutation, TError, UpdatePostMutationVariables, TContext>,
+      headers?: RequestInit['headers']
+    ) =>
+    useMutation<UpdatePostMutation, TError, UpdatePostMutationVariables, TContext>(
+      'UpdatePost',
+      (variables?: UpdatePostMutationVariables) => fetcher<UpdatePostMutation, UpdatePostMutationVariables>(client, UpdatePostDocument, variables, headers)(),
+      options
+    );
 export const MeDocument = `
     query Me {
   me {
@@ -282,6 +321,29 @@ export const useMeQuery = <
     useQuery<MeQuery, TError, TData>(
       variables === undefined ? ['Me'] : ['Me', variables],
       fetcher<MeQuery, MeQueryVariables>(client, MeDocument, variables, headers),
+      options
+    );
+export const PostDocument = `
+    query Post($id: Float!) {
+  post(id: $id) {
+    id
+    title
+    description
+  }
+}
+    `;
+export const usePostQuery = <
+      TData = PostQuery,
+      TError = unknown
+    >(
+      client: GraphQLClient,
+      variables: PostQueryVariables,
+      options?: UseQueryOptions<PostQuery, TError, TData>,
+      headers?: RequestInit['headers']
+    ) =>
+    useQuery<PostQuery, TError, TData>(
+      ['Post', variables],
+      fetcher<PostQuery, PostQueryVariables>(client, PostDocument, variables, headers),
       options
     );
 export const PostsDocument = `

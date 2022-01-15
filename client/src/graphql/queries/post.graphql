@@ -1,0 +1,7 @@
+query Post($id: Float!) {
+  post(id: $id) {
+    id
+    title
+    description
+  }
+}
