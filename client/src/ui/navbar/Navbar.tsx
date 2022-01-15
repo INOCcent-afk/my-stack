@@ -1,5 +1,5 @@
 import Link from "next/link";
-import React, { FC, ReactNode, useEffect } from "react";
+import React, { FC } from "react";
 import { MeQuery, useMeQuery } from "../../generated/graphql";
 import graphqlRequestClient from "../../lib/clients/graphqlRequestClient";
 import { ILink } from "../../models/ILink";
@@ -12,16 +12,16 @@ const Navbar: FC = () => {
     <header className="py-6 flex items-center justify-center bg-gray-800">
       <ul className="flex items-center gap-4 text-white">
         {data && <p style={{ color: "red" }}>{data?.me?.username}</p>}
-        {data?.me ? (
+        {data?.me && (
           <>
             <NavbarList links={withAuthNavItems} />
             <li>
               <button>logout</button>
             </li>
           </>
-        ) : (
-          <NavbarList links={noAuthNavItems} />
         )}
+
+        {!data?.me && <NavbarList links={noAuthNavItems} />}
       </ul>
     </header>
   );

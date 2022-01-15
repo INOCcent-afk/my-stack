@@ -14,8 +14,6 @@ const withAuth: withAuthenticationFn = (Component) => {
 
     if (data?.me === null) router.push("/login");
 
-    console.log(data?.me);
-
     return data?.me ? <Component /> : null;
   };
 

@@ -1,8 +1,14 @@
+import { useRouter } from "next/router";
 import React, { FormEvent, SyntheticEvent, useState } from "react";
+import { useQueryClient } from "react-query";
 import { RegisterMutation, useRegisterMutation } from "../generated/graphql";
 import graphqlRequestClient from "../lib/clients/graphqlRequestClient";
+import withNoAuth from "../shared-components/withNoAuth";
 
 const register = () => {
+  const router = useRouter();
+  const queryClient = useQueryClient();
+
   const [userData, setUserData] = useState({
     username: "",
     password: "",
@@ -24,6 +30,8 @@ const register = () => {
     {
       onSuccess: (data: RegisterMutation) => {
         if (data.register.user) {
+          queryClient.invalidateQueries("Me");
+          router.push("/");
         } else {
           setErrors({
             field: data.register.errors![0].field,
@@ -67,4 +75,4 @@ const register = () => {
   );
 };
 
-export default register;
+export default withNoAuth(register);
