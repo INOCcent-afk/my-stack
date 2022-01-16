@@ -21,12 +21,13 @@ const PostsListContainer = () => {
             </h1>
           </div>
         ) : (
-          data &&
+          data?.posts &&
           data.posts.map((item) => (
             <Post
               key={item.id}
               title={item.title}
               id={item.id}
+              creatorId={item.creator.id}
               creator={item.creator.username}
               description={item.description as string}
               voteNumber={0}

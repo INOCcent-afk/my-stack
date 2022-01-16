@@ -5,6 +5,7 @@ query Posts {
     title
     description
     creator {
+      id
       username
     }
   }

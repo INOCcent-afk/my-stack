@@ -171,7 +171,7 @@ export type PostQuery = { __typename?: 'Query', post?: { __typename?: 'Post', id
 export type PostsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type PostsQuery = { __typename?: 'Query', posts?: Array<{ __typename?: 'Post', id: number, updatedAt: string, title: string, description?: string | null | undefined, creator: { __typename?: 'User', username: string } }> | null | undefined };
+export type PostsQuery = { __typename?: 'Query', posts?: Array<{ __typename?: 'Post', id: number, updatedAt: string, title: string, description?: string | null | undefined, creator: { __typename?: 'User', id: number, username: string } }> | null | undefined };
 
 
 export const CreatePostDocument = `
@@ -369,6 +369,7 @@ export const PostsDocument = `
     title
     description
     creator {
+      id
       username
     }
   }

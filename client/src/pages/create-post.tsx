@@ -3,7 +3,9 @@ import { Form, Formik } from "formik";
 import { useQueryClient } from "react-query";
 import {
   CreatePostMutation,
+  MeQuery,
   useCreatePostMutation,
+  useMeQuery,
 } from "../generated/graphql";
 import graphqlRequestClient from "../lib/clients/graphqlRequestClient";
 import { toast } from "react-toastify";
@@ -13,6 +15,8 @@ import Button from "../ui/Button";
 
 const createPost = () => {
   const queryClient = useQueryClient();
+
+  const { data } = useMeQuery<MeQuery | null | undefined>(graphqlRequestClient);
 
   const createPost = useCreatePostMutation<CreatePostMutation | Error>(
     graphqlRequestClient,
@@ -26,7 +30,12 @@ const createPost = () => {
 
   return (
     <Formik
-      initialValues={{ title: "", description: "" }}
+      enableReinitialize={true}
+      initialValues={{
+        creator: data?.me?.id as number,
+        title: "",
+        description: "",
+      }}
       onSubmit={async (values, { resetForm }) => {
         createPost.mutate(values);
         resetForm();

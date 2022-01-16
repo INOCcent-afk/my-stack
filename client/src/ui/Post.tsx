@@ -18,6 +18,7 @@ interface PostProps {
   description: string;
   voteNumber: number;
   creator: string;
+  creatorId: number;
 }
 
 const Post: FC<PostProps> = ({
@@ -26,6 +27,7 @@ const Post: FC<PostProps> = ({
   description,
   voteNumber,
   creator,
+  creatorId,
 }) => {
   const queryClient = useQueryClient();
 
@@ -55,7 +57,7 @@ const Post: FC<PostProps> = ({
         />
         <div className="">{description}</div>
       </div>
-      {data?.me?.id === id ? (
+      {data?.me?.id === creatorId ? (
         <div className="flex gap-4 self-end">
           <Link href={`/post-edit/${id}`}>
             <a>
