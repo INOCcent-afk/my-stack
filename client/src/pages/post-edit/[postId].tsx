@@ -14,6 +14,8 @@ import Button from "../../ui/Button";
 import InputField from "../../ui/InputField";
 import TextAreaField from "../../ui/TextAreaField";
 
+interface IPostQuery extends PostQuery, Error {}
+
 const PostId = () => {
   const router = useRouter();
   const queryClient = useQueryClient();
@@ -45,8 +47,8 @@ const PostId = () => {
     }
   );
 
-  const isTitleNotEmpty = postData?.post.title ? postData?.post.title : "";
-  const isDescriptionNotEmpty = postData?.post.description
+  const isTitleNotEmpty = postData?.post?.title ? postData?.post.title : "";
+  const isDescriptionNotEmpty = postData?.post?.description
     ? postData?.post.description
     : "";
 
