@@ -22,7 +22,7 @@ const PostId = () => {
 
   let id = Number(router.query.postId);
 
-  const { data: postData, refetch } = usePostQuery<PostQuery | Error>(
+  const { data: postData, refetch } = usePostQuery<IPostQuery>(
     graphqlRequestClient,
     { id },
     {
