@@ -4,7 +4,9 @@ import { useQueryClient } from "react-query";
 import { toast } from "react-toastify";
 import {
   DeletePostMutation,
+  MeQuery,
   useDeletePostMutation,
+  useMeQuery,
 } from "../generated/graphql";
 import graphqlRequestClient from "../lib/clients/graphqlRequestClient";
 import Button from "./Button";
@@ -26,6 +28,8 @@ const Post: FC<PostProps> = ({
   creator,
 }) => {
   const queryClient = useQueryClient();
+
+  const { data } = useMeQuery<MeQuery | null | undefined>(graphqlRequestClient);
 
   const deletePost = useDeletePostMutation<DeletePostMutation | Error>(
     graphqlRequestClient,
@@ -51,18 +55,20 @@ const Post: FC<PostProps> = ({
         />
         <div className="">{description}</div>
       </div>
-      <div className="flex gap-4 self-end">
-        <Link href={`/post-edit/${id}`}>
-          <a>
-            <Button text="Edit" variant="success" />
-          </a>
-        </Link>
-        <Button
-          text="Delete"
-          onClick={() => deletePost.mutate({ id })}
-          variant="error"
-        />
-      </div>
+      {data?.me?.id === id ? (
+        <div className="flex gap-4 self-end">
+          <Link href={`/post-edit/${id}`}>
+            <a>
+              <Button text="Edit" variant="success" />
+            </a>
+          </Link>
+          <Button
+            text="Delete"
+            onClick={() => deletePost.mutate({ id })}
+            variant="error"
+          />
+        </div>
+      ) : null}
     </div>
   );
 };
