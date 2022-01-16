@@ -1,5 +1,6 @@
-import { Entity, PrimaryKey, Property } from "@mikro-orm/core";
+import { Entity, ManyToOne, PrimaryKey, Property } from "@mikro-orm/core";
 import { Field, ObjectType } from "type-graphql";
+import { User } from "./User";
 
 @ObjectType()
 @Entity()
@@ -23,4 +24,8 @@ export class Post {
   @Field(() => String, { nullable: true })
   @Property({ type: "text", nullable: true })
   description?: string;
+
+  @Field()
+  @ManyToOne(() => User)
+  creator: User;
 }

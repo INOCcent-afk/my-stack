@@ -31,9 +31,9 @@ let PostResolver = class PostResolver {
     post(id, { em }) {
         return em.findOne(Post_1.Post, { id });
     }
-    createPost(title, description, { em }) {
+    createPost(creator, title, description, { em }) {
         return __awaiter(this, void 0, void 0, function* () {
-            const post = em.create(Post_1.Post, { title, description });
+            const post = em.create(Post_1.Post, { creator, title, description });
             yield em.persistAndFlush(post);
             return post;
         });
@@ -79,11 +79,12 @@ __decorate([
 ], PostResolver.prototype, "post", null);
 __decorate([
     (0, type_graphql_1.Mutation)(() => Post_1.Post),
-    __param(0, (0, type_graphql_1.Arg)("title")),
-    __param(1, (0, type_graphql_1.Arg)("description", { nullable: true })),
-    __param(2, (0, type_graphql_1.Ctx)()),
+    __param(0, (0, type_graphql_1.Arg)("creator")),
+    __param(1, (0, type_graphql_1.Arg)("title")),
+    __param(2, (0, type_graphql_1.Arg)("description", { nullable: true })),
+    __param(3, (0, type_graphql_1.Ctx)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, String, Object]),
+    __metadata("design:paramtypes", [Number, String, String, Object]),
     __metadata("design:returntype", Promise)
 ], PostResolver.prototype, "createPost", null);
 __decorate([

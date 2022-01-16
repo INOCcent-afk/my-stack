@@ -16,11 +16,12 @@ export class PostResolver {
 
   @Mutation(() => Post)
   async createPost(
+    @Arg("creator") creator: number,
     @Arg("title") title: string,
     @Arg("description", { nullable: true }) description: string,
     @Ctx() { em }: MyContext
   ): Promise<Post> {
-    const post = em.create(Post, { title, description });
+    const post = em.create(Post, { creator, title, description });
     await em.persistAndFlush(post);
     return post;
   }
