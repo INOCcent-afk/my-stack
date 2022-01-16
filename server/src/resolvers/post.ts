@@ -1,17 +1,43 @@
 import { Post } from "../entities/Post";
 import { MyContext } from "src/utils/types";
-import { Arg, Ctx, Mutation, Query, Resolver } from "type-graphql";
+import {
+  Arg,
+  Ctx,
+  Field,
+  Mutation,
+  ObjectType,
+  Query,
+  Resolver,
+} from "type-graphql";
+import { FieldError } from "../models/Error";
+
+@ObjectType()
+class PostResponse {
+  @Field(() => [FieldError], { nullable: true })
+  errors?: FieldError[];
+
+  @Field(() => Post, { nullable: true })
+  post?: Post;
+}
 
 @Resolver()
 export class PostResolver {
-  @Query(() => [Post])
-  posts(@Ctx() { em }: MyContext): Promise<Post[]> {
-    return em.find(Post, {});
+  @Query(() => [Post], { nullable: true })
+  async posts(@Ctx() { em, req }: MyContext): Promise<Post[] | null> {
+    if (!req.session.userId) {
+      return null;
+    }
+    const posts = await em.find(Post, {});
+
+    return posts;
   }
 
   @Query(() => Post, { nullable: true })
-  post(@Arg("id") id: number, @Ctx() { em }: MyContext): Promise<Post | null> {
-    return em.findOne(Post, { id });
+  async post(
+    @Arg("id") id: number,
+    @Ctx() { em }: MyContext
+  ): Promise<Post | null> {
+    return await em.findOne(Post, { id });
   }
 
   @Mutation(() => Post)
@@ -26,14 +52,21 @@ export class PostResolver {
     return post;
   }
 
-  @Mutation(() => Post, { nullable: true })
+  @Mutation(() => PostResponse)
   async updatePost(
     @Arg("id") id: number,
     @Arg("title", { nullable: true }) title: string,
     @Arg("description", { nullable: true }) description: string,
-    @Ctx() { em }: MyContext
-  ): Promise<Post | null> {
+    @Ctx() { em, req }: MyContext
+  ): Promise<PostResponse | null> {
     const post = await em.findOne(Post, { id });
+
+    if (req.session.userId !== post?.creator.id) {
+      return {
+        errors: [{ field: "user", message: "you can only edit your own post" }],
+      };
+    }
+
     if (!post) {
       return null;
     }
@@ -48,7 +81,7 @@ export class PostResolver {
       await em.persistAndFlush(post);
     }
 
-    return post;
+    return { post };
   }
 
   @Mutation(() => Boolean)

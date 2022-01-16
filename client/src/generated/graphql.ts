@@ -32,11 +32,12 @@ export type Mutation = {
   login: UserResponse;
   logout: Scalars['Boolean'];
   register: UserResponse;
-  updatePost?: Maybe<Post>;
+  updatePost: PostResponse;
 };
 
 
 export type MutationCreatePostArgs = {
+  creator: Scalars['Float'];
   description?: InputMaybe<Scalars['String']>;
   title: Scalars['String'];
 };
@@ -66,10 +67,17 @@ export type MutationUpdatePostArgs = {
 export type Post = {
   __typename?: 'Post';
   createdAt: Scalars['String'];
+  creator: User;
   description?: Maybe<Scalars['String']>;
   id: Scalars['Float'];
   title: Scalars['String'];
   updatedAt: Scalars['String'];
+};
+
+export type PostResponse = {
+  __typename?: 'PostResponse';
+  errors?: Maybe<Array<FieldError>>;
+  post?: Maybe<Post>;
 };
 
 export type Query = {
@@ -77,7 +85,7 @@ export type Query = {
   hello: Scalars['String'];
   me?: Maybe<User>;
   post?: Maybe<Post>;
-  posts: Array<Post>;
+  posts?: Maybe<Array<Post>>;
 };
 
 
@@ -105,12 +113,13 @@ export type UsernamePasswordInput = {
 };
 
 export type CreatePostMutationVariables = Exact<{
+  creator: Scalars['Float'];
   title: Scalars['String'];
   description: Scalars['String'];
 }>;
 
 
-export type CreatePostMutation = { __typename?: 'Mutation', createPost: { __typename?: 'Post', id: number, createdAt: string, title: string, description?: string | null | undefined } };
+export type CreatePostMutation = { __typename?: 'Mutation', createPost: { __typename?: 'Post', id: number, updatedAt: string, title: string, description?: string | null | undefined } };
 
 export type DeletePostMutationVariables = Exact<{
   id: Scalars['Float'];
@@ -145,7 +154,7 @@ export type UpdatePostMutationVariables = Exact<{
 }>;
 
 
-export type UpdatePostMutation = { __typename?: 'Mutation', updatePost?: { __typename?: 'Post', id: number, title: string, description?: string | null | undefined, updatedAt: string } | null | undefined };
+export type UpdatePostMutation = { __typename?: 'Mutation', updatePost: { __typename?: 'PostResponse', post?: { __typename?: 'Post', id: number, title: string, description?: string | null | undefined, updatedAt: string } | null | undefined, errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null | undefined } };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -162,14 +171,14 @@ export type PostQuery = { __typename?: 'Query', post?: { __typename?: 'Post', id
 export type PostsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type PostsQuery = { __typename?: 'Query', posts: Array<{ __typename?: 'Post', id: number, createdAt: string, updatedAt: string, title: string, description?: string | null | undefined }> };
+export type PostsQuery = { __typename?: 'Query', posts?: Array<{ __typename?: 'Post', id: number, updatedAt: string, title: string, description?: string | null | undefined, creator: { __typename?: 'User', username: string } }> | null | undefined };
 
 
 export const CreatePostDocument = `
-    mutation CreatePost($title: String!, $description: String!) {
-  createPost(title: $title, description: $description) {
+    mutation CreatePost($creator: Float!, $title: String!, $description: String!) {
+  createPost(creator: $creator, title: $title, description: $description) {
     id
-    createdAt
+    updatedAt
     title
     description
   }
@@ -281,10 +290,16 @@ export const useRegisterMutation = <
 export const UpdatePostDocument = `
     mutation UpdatePost($id: Float!, $title: String, $description: String) {
   updatePost(id: $id, title: $title, description: $description) {
-    id
-    title
-    description
-    updatedAt
+    post {
+      id
+      title
+      description
+      updatedAt
+    }
+    errors {
+      field
+      message
+    }
   }
 }
     `;
@@ -350,10 +365,12 @@ export const PostsDocument = `
     query Posts {
   posts {
     id
-    createdAt
     updatedAt
     title
     description
+    creator {
+      username
+    }
   }
 }
     `;

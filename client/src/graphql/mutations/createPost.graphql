@@ -1,7 +1,7 @@
-mutation CreatePost($title: String!, $description: String!) {
-  createPost(title: $title, description: $description) {
+mutation CreatePost($creator: Float!, $title: String!, $description: String!) {
+  createPost(creator: $creator, title: $title, description: $description) {
     id
-    createdAt
+    updatedAt
     title
     description
   }

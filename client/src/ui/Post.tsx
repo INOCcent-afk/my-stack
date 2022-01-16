@@ -15,9 +15,16 @@ interface PostProps {
   id: number;
   description: string;
   voteNumber: number;
+  creator: string;
 }
 
-const Post: FC<PostProps> = ({ title, id, description, voteNumber }) => {
+const Post: FC<PostProps> = ({
+  title,
+  id,
+  description,
+  voteNumber,
+  creator,
+}) => {
   const queryClient = useQueryClient();
 
   const deletePost = useDeletePostMutation<DeletePostMutation | Error>(
@@ -33,7 +40,7 @@ const Post: FC<PostProps> = ({ title, id, description, voteNumber }) => {
   return (
     <div className="text-white bg-gray-800 p-5 flex flex-col rounded-md gap-6">
       <div className="flex items-center gap-2 ">
-        <h1 className="font-bold text-xl">Creator:</h1>
+        <h1 className="font-bold text-xl">{creator}:</h1>
         <p>{title}</p>
       </div>
       <div className="flex items-start gap-10">

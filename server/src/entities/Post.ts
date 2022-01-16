@@ -25,7 +25,7 @@ export class Post {
   @Property({ type: "text", nullable: true })
   description?: string;
 
-  @Field()
-  @ManyToOne(() => User)
+  @Field(() => User)
+  @ManyToOne(() => User, { eager: true })
   creator: User;
 }

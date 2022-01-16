@@ -27,6 +27,7 @@ const PostsListContainer = () => {
               key={item.id}
               title={item.title}
               id={item.id}
+              creator={item.creator.username}
               description={item.description as string}
               voteNumber={0}
             />

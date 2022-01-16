@@ -31,10 +31,16 @@ const PostId = () => {
   const editPost = useUpdatePostMutation<UpdatePostMutation | Error>(
     graphqlRequestClient,
     {
-      onSuccess: () => {
-        queryClient.invalidateQueries("Posts");
-        queryClient.invalidateQueries("Post");
-        toast.success("Update Post ./.");
+      onSuccess: (data: UpdatePostMutation) => {
+        if (data.updatePost.errors) {
+          toast.error(
+            `${data.updatePost.errors[0].field}: ${data.updatePost.errors[0].message} `
+          );
+        } else {
+          queryClient.invalidateQueries("Posts");
+          queryClient.invalidateQueries("Post");
+          toast.success("Update Post ./.");
+        }
       },
     }
   );
@@ -75,7 +81,7 @@ const PostId = () => {
           />
           <Button
             type="submit"
-            text="Create Post"
+            text="Update Post"
             variant="secondary"
             disabled={isSubmitting}
           />

@@ -24,12 +24,34 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.PostResolver = void 0;
 const Post_1 = require("../entities/Post");
 const type_graphql_1 = require("type-graphql");
+const Error_1 = require("../models/Error");
+let PostResponse = class PostResponse {
+};
+__decorate([
+    (0, type_graphql_1.Field)(() => [Error_1.FieldError], { nullable: true }),
+    __metadata("design:type", Array)
+], PostResponse.prototype, "errors", void 0);
+__decorate([
+    (0, type_graphql_1.Field)(() => Post_1.Post, { nullable: true }),
+    __metadata("design:type", Post_1.Post)
+], PostResponse.prototype, "post", void 0);
+PostResponse = __decorate([
+    (0, type_graphql_1.ObjectType)()
+], PostResponse);
 let PostResolver = class PostResolver {
-    posts({ em }) {
-        return em.find(Post_1.Post, {});
+    posts({ em, req }) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (!req.session.userId) {
+                return null;
+            }
+            const posts = yield em.find(Post_1.Post, {});
+            return posts;
+        });
     }
     post(id, { em }) {
-        return em.findOne(Post_1.Post, { id });
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield em.findOne(Post_1.Post, { id });
+        });
     }
     createPost(creator, title, description, { em }) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -38,9 +60,14 @@ let PostResolver = class PostResolver {
             return post;
         });
     }
-    updatePost(id, title, description, { em }) {
+    updatePost(id, title, description, { em, req }) {
         return __awaiter(this, void 0, void 0, function* () {
             const post = yield em.findOne(Post_1.Post, { id });
+            if (req.session.userId !== (post === null || post === void 0 ? void 0 : post.creator.id)) {
+                return {
+                    errors: [{ field: "user", message: "you can only edit your own post" }],
+                };
+            }
             if (!post) {
                 return null;
             }
@@ -52,7 +79,7 @@ let PostResolver = class PostResolver {
                 post.description = description;
                 yield em.persistAndFlush(post);
             }
-            return post;
+            return { post };
         });
     }
     deletePost(id, { em }) {
@@ -63,7 +90,7 @@ let PostResolver = class PostResolver {
     }
 };
 __decorate([
-    (0, type_graphql_1.Query)(() => [Post_1.Post]),
+    (0, type_graphql_1.Query)(() => [Post_1.Post], { nullable: true }),
     __param(0, (0, type_graphql_1.Ctx)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
@@ -88,7 +115,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], PostResolver.prototype, "createPost", null);
 __decorate([
-    (0, type_graphql_1.Mutation)(() => Post_1.Post, { nullable: true }),
+    (0, type_graphql_1.Mutation)(() => PostResponse),
     __param(0, (0, type_graphql_1.Arg)("id")),
     __param(1, (0, type_graphql_1.Arg)("title", { nullable: true })),
     __param(2, (0, type_graphql_1.Arg)("description", { nullable: true })),

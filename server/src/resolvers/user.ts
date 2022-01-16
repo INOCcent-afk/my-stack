@@ -12,6 +12,7 @@ import {
 } from "type-graphql";
 import argon2 from "argon2";
 import { COOKIE_NAME } from "../utils/constants";
+import { FieldError } from "../models/Error";
 
 @InputType()
 class UsernamePasswordInput {
@@ -19,15 +20,6 @@ class UsernamePasswordInput {
   username: string;
   @Field()
   password: string;
-}
-
-@ObjectType()
-class FieldError {
-  @Field()
-  field: string;
-
-  @Field()
-  message: string;
 }
 
 @ObjectType()

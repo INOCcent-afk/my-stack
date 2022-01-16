@@ -45,8 +45,8 @@ __decorate([
     __metadata("design:type", String)
 ], Post.prototype, "description", void 0);
 __decorate([
-    (0, type_graphql_1.Field)(),
-    (0, core_1.ManyToOne)(() => User_1.User),
+    (0, type_graphql_1.Field)(() => User_1.User),
+    (0, core_1.ManyToOne)(() => User_1.User, { eager: true }),
     __metadata("design:type", User_1.User)
 ], Post.prototype, "creator", void 0);
 Post = __decorate([
